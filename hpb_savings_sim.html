@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ホットペッパー手数料 削減シミュレーション</title>
+<meta property="og:title" content="ホットペッパー手数料 削減シミュレーション">
+<meta property="og:description" content="常連さんの予約を直予約に移すと、手数料はいくら減る？客単価・件数・移行割合を入力するだけで年間削減額をその場で試算できます。">
+<meta property="og:image" content="https://miho-okomee.github.io/meo-lp/ogp.png">
+<meta property="og:url" content="https://miho-okomee.github.io/meo-lp/hpb_savings_sim.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #1A1A18;
+    --ink-soft: #4A4A47;
+    --mute: #888780;
+    --line: #E0DED8;
+    --pale: #F4F3EF;
+    --paper: #FFFFFF;
+    --accent: #1A5FA8;
+    --accent-deep: #134B85;
+    --accent-pale: #EBF3FB;
+    --ok: #2E6410;
+    --ok-pale: #EBF4E3;
+    --warn: #9B2C2C;
+    --warn-pale: #FDF0F0;
+  }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: #ECEAE4;
+    line-height: 1.7;
+    font-size: 15px;
+    padding: 1.5rem 1rem 2.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    max-width: 560px; margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 6px 28px rgba(0,0,0,.09);
+    overflow: hidden;
+  }
+
+  /* header */
+  .head { background: linear-gradient(155deg, var(--accent-deep), var(--accent)); color: #fff; padding: 1.6rem 1.5rem 1.5rem; }
+  .head .eyebrow { font-size: 11px; letter-spacing: .16em; color: rgba(255,255,255,.7); margin-bottom: .5rem; }
+  .head h1 { font-size: 20px; font-weight: 900; line-height: 1.5; letter-spacing: -.01em; }
+  .head p { font-size: 12.5px; color: rgba(255,255,255,.82); margin-top: .6rem; line-height: 1.8; }
+
+  /* inputs */
+  .body { padding: 1.5rem; }
+  .field { margin-bottom: 1.4rem; }
+  .field:last-of-type { margin-bottom: 0; }
+  .field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: .15rem; }
+  .field .hint { font-size: 11px; color: var(--mute); margin-bottom: .55rem; line-height: 1.6; }
+
+  .num-wrap { display: flex; align-items: center; gap: 8px; }
+  .num-wrap .yen { font-size: 15px; font-weight: 700; color: var(--mute); }
+  .num-wrap input, .num-wrap .unit { font-family: inherit; }
+  input.num {
+    flex: 1; width: 100%;
+    font-size: 19px; font-weight: 700; color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 9px 12px; outline: none; background: var(--pale);
+    -moz-appearance: textfield;
+  }
+  input.num:focus { border-color: var(--accent); background: #fff; }
+  input.num::-webkit-outer-spin-button, input.num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .num-wrap .unit { font-size: 13px; color: var(--mute); font-weight: 500; white-space: nowrap; }
+
+  /* slider */
+  .slider-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .4rem; }
+  .slider-val { font-size: 21px; font-weight: 900; color: var(--accent); }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 3px; background: var(--line); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.25); border: 3px solid #fff; }
+  input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+  .range-ticks { display: flex; justify-content: space-between; font-size: 10px; color: var(--mute); margin-top: .35rem; }
+
+  /* result */
+  .result { background: var(--ok-pale); border-top: 1px solid #CDE0BF; padding: 1.5rem 1.5rem 1.6rem; }
+  .result .rlabel { font-size: 11px; font-weight: 700; letter-spacing: .12em; color: var(--ok); margin-bottom: .3rem; }
+  .save-year { font-size: 40px; font-weight: 900; color: var(--ok); line-height: 1.1; letter-spacing: -.02em; }
+  .save-year .u { font-size: 17px; font-weight: 700; margin-left: 2px; }
+  .save-year .pre { font-size: 15px; font-weight: 700; color: var(--ink-soft); margin-right: 4px; }
+  .save-month { font-size: 13.5px; color: var(--ink-soft); margin-top: .35rem; font-weight: 500; }
+  .save-month b { color: var(--ok); font-weight: 900; }
+
+  /* before/after bar */
+  .ba { margin-top: 1.3rem; }
+  .ba-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 12px; }
+  .ba-row .t { width: 70px; flex-shrink: 0; color: var(--ink-soft); font-weight: 700; }
+  .ba-bar-wrap { flex: 1; background: #fff; border-radius: 5px; overflow: hidden; height: 22px; border: 1px solid rgba(0,0,0,.06); }
+  .ba-bar { height: 100%; border-radius: 5px 0 0 5px; transition: width .4s cubic-bezier(.4,0,.2,1); display: flex; align-items: center; justify-content: flex-end; padding-right: 7px; color: #fff; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .ba-bar.now { background: var(--warn); }
+  .ba-bar.after { background: var(--ok); }
+  .ba-cap { font-size: 11px; color: var(--mute); margin-top: .3rem; }
+
+  /* breakdown */
+  .breakdown { padding: 1.2rem 1.5rem; border-top: 1px solid var(--line); }
+  .bd-row { display: flex; justify-content: space-between; font-size: 12.5px; padding: 5px 0; color: var(--ink-soft); }
+  .bd-row .v { font-weight: 700; color: var(--ink); }
+  .bd-row.sep { border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 9px; }
+
+  /* note */
+  .note { padding: 1.1rem 1.5rem 1.4rem; border-top: 1px solid var(--line); background: var(--pale); }
+  .note .nt { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--mute); margin-bottom: .5rem; }
+  .note ul { list-style: none; font-size: 11px; color: var(--mute); line-height: 1.75; }
+  .note li { padding-left: 14px; position: relative; margin-bottom: 3px; }
+  .note li::before { content: "・"; position: absolute; left: 0; }
+
+  /* advanced */
+  details.adv { padding: 0 1.5rem 1.2rem; }
+  details.adv summary { font-size: 12px; color: var(--accent); cursor: pointer; padding: 8px 0; font-weight: 700; }
+  details.adv .num-wrap { margin-top: 4px; }
+  details.adv input.num { font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="head">
+    <div class="eyebrow">HOT PEPPER 手数料 削減シミュレーション</div>
+    <h1>常連さんの予約を“直予約”に移すと、<br>手数料はいくら減る？</h1>
+    <p>新規集客はホットペッパーのまま。常連さんだけGoogle・LINEの直予約に寄せた場合の、手数料の削減額をその場で試算します。</p>
+  </div>
+
+  <div class="body">
+    <div class="field">
+      <label for="tanka">平均客単価（税抜）</label>
+      <div class="hint">1回あたりの施術料金の平均。HPBの手数料は税抜売上にかかります。</div>
+      <div class="num-wrap">
+        <span class="yen">¥</span>
+        <input class="num" id="tanka" type="number" inputmode="numeric" value="7000" min="0" step="100">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="kensu">HPB経由の常連予約（月間）</label>
+      <div class="hint">いま毎月、常連さんがホットペッパー経由で入れている予約のおおよその件数。</div>
+      <div class="num-wrap">
+        <input class="num" id="kensu" type="number" inputmode="numeric" value="40" min="0" step="1">
+        <span class="unit">件 / 月</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="slider-top">
+        <label for="ritsu" style="margin:0;">直予約に移せる割合</label>
+        <span class="slider-val" id="ritsuVal">60%</span>
+      </div>
+      <div class="hint">常連さんのうち、Google・LINEの直予約に切り替えられそうな割合。最初は無理せず低めでも。</div>
+      <input type="range" id="ritsu" min="0" max="100" value="60" step="5">
+      <div class="range-ticks"><span>0%</span><span>50%</span><span>100%</span></div>
+    </div>
+  </div>
+
+  <div class="result">
+    <div class="rlabel">年間の削減額（手数料）</div>
+    <div class="save-year"><span class="pre">約</span><span id="saveYear">0</span><span class="u">円</span></div>
+    <div class="save-month">月あたり 約 <b id="saveMonth">0</b> 円の手数料が浮く計算です。</div>
+
+    <div class="ba">
+      <div class="ba-row">
+        <span class="t">今</span>
+        <div class="ba-bar-wrap"><div class="ba-bar now" id="barNow" style="width:100%"><span id="barNowTxt"></span></div></div>
+      </div>
+      <div class="ba-row">
+        <span class="t">移行後</span>
+        <div class="ba-bar-wrap"><div class="ba-bar after" id="barAfter" style="width:40%"><span id="barAfterTxt"></span></div></div>
+      </div>
+      <div class="ba-cap">常連予約にかかる月間手数料の比較（新規分・掲載料は含みません）</div>
+    </div>
+  </div>
+
+  <div class="breakdown">
+    <div class="bd-row"><span>1件あたりの手数料（客単価 × <span id="rateTxt">2.0</span>%）</span><span class="v">¥<span id="perFee">0</span></span></div>
+    <div class="bd-row"><span>直予約に移る常連予約</span><span class="v"><span id="movedKensu">0</span> 件 / 月</span></div>
+    <div class="bd-row sep"><span>月間の削減額</span><span class="v" style="color:var(--ok)">¥<span id="saveMonth2">0</span></span></div>
+  </div>
+
+  <details class="adv">
+    <summary>手数料率を調整する（詳細設定）</summary>
+    <div class="hint" style="font-size:11px;color:var(--mute);">標準は2.0%（ポイント還元1%＋システム利用料1%）。契約プランにより異なる場合はここで変更できます。</div>
+    <div class="num-wrap">
+      <input class="num" id="rate" type="number" inputmode="decimal" value="2.0" min="0" step="0.1">
+      <span class="unit">%</span>
+    </div>
+  </details>
+
+  <div class="note">
+    <div class="nt">前提と注意</div>
+    <ul>
+      <li>ホットペッパー経由のネット予約には、税抜売上の約2％（ポイント還元1％＋システム利用料1％）の手数料が発生します。</li>
+      <li>電話予約・店頭での次回予約・自社のネット予約には、この手数料はかかりません。</li>
+      <li>新規集客用にホットペッパー掲載は継続する前提のため、月額の掲載料は変わらず、本試算には含みません。</li>
+      <li>実際の料率・プランは契約により異なるため、本結果は概算です。</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  var $ = function (id) { return document.getElementById(id); };
+  function yen(n) { return Math.round(n).toLocaleString('ja-JP'); }
+
+  function calc() {
+    var tanka = Math.max(0, parseFloat($('tanka').value) || 0);
+    var kensu = Math.max(0, parseFloat($('kensu').value) || 0);
+    var ritsu = Math.max(0, Math.min(100, parseFloat($('ritsu').value) || 0));
+    var rate  = Math.max(0, parseFloat($('rate').value) || 0) / 100;
+
+    $('ritsuVal').textContent = ritsu + '%';
+    $('rateTxt').textContent = (rate * 100).toFixed(1);
+
+    var perFee = tanka * rate;                       // 1件あたり手数料
+    var moved = kensu * (ritsu / 100);               // 移行する件数
+    var saveMonth = perFee * moved;                  // 月間削減
+    var saveYear = saveMonth * 12;                   // 年間削減
+
+    var feeNow = perFee * kensu;                     // 常連分の現状月間手数料
+    var feeAfter = perFee * (kensu - moved);         // 移行後
+
+    $('saveYear').textContent = yen(saveYear);
+    $('saveMonth').textContent = yen(saveMonth);
+    $('saveMonth2').textContent = yen(saveMonth);
+    $('perFee').textContent = yen(perFee);
+    $('movedKensu').textContent = Math.round(moved);
+
+    // bars (now = 100%, after relative)
+    var afterPct = feeNow > 0 ? (feeAfter / feeNow) * 100 : 0;
+    $('barNow').style.width = '100%';
+    $('barAfter').style.width = Math.max(2, afterPct) + '%';
+    $('barNowTxt').textContent = '¥' + yen(feeNow);
+    $('barAfterTxt').textContent = '¥' + yen(feeAfter);
+  }
+
+  ['tanka','kensu','ritsu','rate'].forEach(function (id) {
+    $(id).addEventListener('input', calc);
+  });
+  calc();
+</script>
+</body>
+</html>
