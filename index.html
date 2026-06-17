@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>はじめてのGoogleビジネスプロフィール 登録れんしゅう道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper:    #f4eee1;
+    --paper-2:  #efe7d6;
+    --card:     #fffdf7;
+    --ink:      #2c2520;
+    --ink-soft: #6b6053;
+    --line:     #e0d6c2;
+    --indigo:   #173f4f;
+    --indigo-2: #1f566b;
+    --vermil:   #cf4a2c;
+    --vermil-d: #b23a20;
+    --ochre:    #c89b3c;
+    --sage:     #5f7a55;
+    --ok:       #4f7d4a;
+    --shadow:   0 18px 40px -22px rgba(44,37,32,.45);
+    --shadow-sm:0 6px 18px -10px rgba(44,37,32,.4);
+    --r:        18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: "Zen Maru Gothic", system-ui, sans-serif;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(207,74,44,.06), transparent 40%),
+      radial-gradient(circle at 88% 12%, rgba(23,63,79,.07), transparent 42%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+  h1, h2, h3 { font-family: "Shippori Mincho B1", serif; line-height: 1.4; letter-spacing: .01em; }
+
+  /* ---------- Practice banner ---------- */
+  .practice-banner {
+    background: repeating-linear-gradient(45deg, var(--ochre), var(--ochre) 14px, #d8ab4c 14px, #d8ab4c 28px);
+    color: #3a2c0c;
+    text-align: center;
+    font-weight: 700;
+    font-size: .82rem;
+    letter-spacing: .08em;
+    padding: 7px 12px;
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 2px 10px -4px rgba(0,0,0,.3);
+  }
+  .practice-banner span { background: rgba(255,253,247,.85); padding: 2px 12px; border-radius: 999px; }
+
+  /* ---------- Header ---------- */
+  header.hero { padding: 48px 0 26px; text-align: center; }
+  .kicker {
+    display: inline-block;
+    font-size: .76rem; letter-spacing: .34em; font-weight: 700;
+    color: var(--vermil-d);
+    border: 1.5px solid var(--vermil); border-radius: 999px;
+    padding: 5px 18px 5px 22px; margin-bottom: 20px;
+    background: rgba(207,74,44,.05);
+  }
+  header.hero h1 { font-size: clamp(1.9rem, 5vw, 3.1rem); margin: 0 0 14px; font-weight: 800; color: var(--indigo); }
+  header.hero h1 em { font-style: normal; color: var(--vermil); position: relative; }
+  header.hero h1 em::after {
+    content: ""; position: absolute; left: -2%; right: -2%; bottom: 4px; height: 10px;
+    background: rgba(200,155,60,.4); border-radius: 4px; z-index: -1;
+  }
+  header.hero p.lead { max-width: 640px; margin: 0 auto; color: var(--ink-soft); font-size: 1.02rem; }
+  .seal {
+    width: 92px; height: 92px; margin: 0 auto 18px; border-radius: 50%;
+    border: 3px solid var(--vermil); color: var(--vermil);
+    display: grid; place-content: center; text-align: center;
+    font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: .82rem; line-height: 1.3;
+    transform: rotate(-7deg); box-shadow: var(--shadow-sm);
+    background: rgba(255,253,247,.6);
+  }
+
+  /* ---------- Stepper ---------- */
+  .stepper { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 26px 0 6px; }
+  .stepper button {
+    font-family: inherit; cursor: pointer; border: 1.5px solid var(--line);
+    background: var(--card); color: var(--ink-soft);
+    border-radius: 999px; padding: 6px 13px; font-size: .8rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 7px; transition: all .25s ease;
+  }
+  .stepper button .num {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--paper-2);
+    display: grid; place-content: center; font-size: .72rem; color: var(--ink-soft);
+  }
+  .stepper button.active { border-color: var(--indigo); background: var(--indigo); color: #fff; box-shadow: var(--shadow-sm); }
+  .stepper button.active .num { background: rgba(255,255,255,.22); color: #fff; }
+  .stepper button.done { border-color: var(--ok); color: var(--ok); }
+  .stepper button.done .num { background: var(--ok); color: #fff; }
+  .stepper button:disabled { cursor: not-allowed; opacity: .55; }
+
+  .progress-track { height: 7px; background: var(--paper-2); border-radius: 999px; overflow: hidden; margin: 14px auto 0; max-width: 760px; border: 1px solid var(--line); }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--vermil), var(--ochre)); border-radius: 999px; transition: width .5s cubic-bezier(.4,0,.2,1); }
+
+  /* ---------- Step layout ---------- */
+  main { padding: 30px 0 80px; }
+  .step { display: none; }
+  .step.show { display: block; animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 26px; align-items: start; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+
+  /* explanation panel */
+  .explain { padding: 30px 28px; position: relative; overflow: hidden; }
+  .explain::before { content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: linear-gradient(var(--indigo), var(--indigo-2)); }
+  .explain .step-tag { font-size: .76rem; letter-spacing: .2em; color: var(--vermil-d); font-weight: 700; }
+  .explain h2 { font-size: 1.55rem; margin: 6px 0 14px; color: var(--indigo); }
+  .explain p { color: var(--ink-soft); margin: 0 0 16px; }
+  .explain ul { margin: 0 0 18px; padding: 0; list-style: none; }
+  .explain ul li { padding: 7px 0 7px 30px; position: relative; }
+  .explain ul li::before {
+    content: "✓"; position: absolute; left: 0; top: 7px; color: #fff; background: var(--ok);
+    width: 20px; height: 20px; border-radius: 50%; display: grid; place-content: center; font-size: .72rem; font-weight: 700;
+  }
+  .tip {
+    background: linear-gradient(180deg, rgba(200,155,60,.12), rgba(200,155,60,.05));
+    border: 1px dashed var(--ochre); border-radius: 12px; padding: 14px 16px; font-size: .9rem;
+  }
+  .tip strong { color: var(--vermil-d); display: block; margin-bottom: 4px; font-family: "Shippori Mincho B1", serif; }
+
+  /* practice (mock GBP) panel */
+  .mock { padding: 0; overflow: hidden; }
+  .mock-bar { background: #fff; border-bottom: 1px solid var(--line); padding: 12px 18px; display: flex; align-items: center; gap: 10px; }
+  .gdot { display: flex; gap: 6px; }
+  .gdot i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+  .gdot i:nth-child(1){ background:#ea4335 } .gdot i:nth-child(2){ background:#fbbc05 } .gdot i:nth-child(3){ background:#34a853 } .gdot i:nth-child(4){ background:#4285f4 }
+  .mock-url { flex: 1; background: var(--paper); border-radius: 999px; padding: 5px 14px; font-size: .76rem; color: var(--ink-soft); font-family: "Zen Maru Gothic"; }
+  .mock-body { padding: 28px 26px 26px; }
+  .mock-body h3 { font-size: 1.15rem; margin: 0 0 4px; color: var(--ink); }
+  .mock-sub { color: var(--ink-soft); font-size: .86rem; margin: 0 0 20px; }
+
+  label.field { display: block; margin-bottom: 16px; }
+  label.field .lab { font-weight: 700; font-size: .88rem; display: block; margin-bottom: 6px; }
+  label.field .lab small { color: var(--ink-soft); font-weight: 500; }
+  .input, select.input, textarea.input {
+    width: 100%; font-family: inherit; font-size: .95rem; color: var(--ink);
+    padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 11px; background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .input:focus, select.input:focus, textarea.input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 4px rgba(23,63,79,.1); }
+  textarea.input { resize: vertical; min-height: 84px; }
+  .err { border-color: var(--vermil) !important; box-shadow: 0 0 0 4px rgba(207,74,44,.12) !important; }
+  .msg { font-size: .8rem; margin-top: 5px; min-height: 1em; }
+  .msg.bad { color: var(--vermil-d); }
+  .msg.good { color: var(--ok); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+  .chip {
+    cursor: pointer; border: 1.5px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 8px 15px; font-family: inherit; font-size: .87rem; font-weight: 700; color: var(--ink-soft);
+    transition: all .18s;
+  }
+  .chip:hover { border-color: var(--indigo); }
+  .chip.sel { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+
+  /* attribute groups */
+  .attr-group { margin-bottom: 15px; }
+  .attr-group h4 { font-family: "Shippori Mincho B1", serif; font-size: .92rem; color: var(--indigo); margin: 0 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+
+  /* post (最新情報) composer */
+  .post-preview { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-top: 14px; background: var(--paper); }
+  .post-preview .pp-card { background: #fff; border-radius: 10px; box-shadow: var(--shadow-sm); overflow: hidden; }
+  .post-preview .pp-img { height: 96px; background: linear-gradient(120deg, var(--indigo-2), var(--sage)); display: grid; place-content: center; color: #fff; font-size: .82rem; letter-spacing: .1em; }
+  .post-preview .pp-body { padding: 11px 14px; }
+  .post-preview .pp-tag { font-size: .72rem; font-weight: 700; color: var(--vermil-d); letter-spacing: .08em; }
+  .post-preview .pp-text { font-size: .9rem; color: var(--ink); margin: 4px 0 0; white-space: pre-wrap; }
+  .post-preview .pp-empty { color: var(--ink-soft); font-style: italic; }
+
+  .radio-card { display: flex; gap: 12px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 12px; padding: 13px 15px; margin-bottom: 10px; cursor: pointer; transition: all .18s; }
+  .radio-card:hover { border-color: var(--indigo); background: rgba(23,63,79,.03); }
+  .radio-card.sel { border-color: var(--indigo); background: rgba(23,63,79,.06); }
+  .radio-card input { margin-top: 4px; accent-color: var(--indigo); }
+  .radio-card .rc-t { font-weight: 700; font-size: .92rem; }
+  .radio-card .rc-d { font-size: .8rem; color: var(--ink-soft); }
+
+  /* fake map */
+  .fakemap { height: 150px; border-radius: 12px; border: 1px solid var(--line); margin-top: 4px; position: relative; overflow: hidden;
+    background:
+      linear-gradient(rgba(95,122,85,.12), rgba(95,122,85,.12)),
+      repeating-linear-gradient(0deg, #eef2e6, #eef2e6 22px, #e6ecdd 22px, #e6ecdd 24px),
+      repeating-linear-gradient(90deg, #eef2e6, #eef2e6 30px, #e6ecdd 30px, #e6ecdd 32px);
+  }
+  .fakemap .road { position: absolute; background: #fff; box-shadow: 0 0 0 1px #dfe6d4; }
+  .pin { position: absolute; left: 50%; top: 46%; transform: translate(-50%,-100%); font-size: 34px; filter: drop-shadow(0 6px 5px rgba(0,0,0,.25)); animation: drop .6s cubic-bezier(.3,1.4,.5,1) both; }
+  @keyframes drop { from { transform: translate(-50%,-180%); opacity: 0; } to { transform: translate(-50%,-100%); opacity: 1; } }
+
+  /* opening hours */
+  .day-block { border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; margin-bottom: 9px; background: #fff; transition: background .2s; }
+  .day-block.closed { background: var(--paper); }
+  .day-head { display: flex; align-items: center; gap: 10px; }
+  .day-head .day { font-weight: 700; font-size: .92rem; }
+  .day-head .day-state { margin-left: auto; font-size: .8rem; color: var(--ink-soft); font-weight: 700; }
+  .toggle { width: 26px; height: 26px; border-radius: 7px; border: 1.5px solid var(--line); cursor: pointer; background: #fff; display:grid; place-content:center; font-size:.8rem; }
+  .toggle.on { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .slots { margin-top: 9px; padding-left: 36px; }
+  .day-block.closed .slots { display: none; }
+  .slot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: .86rem; }
+  .slot-row .tilde { color: var(--ink-soft); }
+  .slot-row .time { width: 116px; padding: 7px 9px; }
+  .slot-del { width: 26px; height: 26px; border-radius: 7px; border: 1.5px solid var(--line); background: #fff; color: var(--vermil); cursor: pointer; font-size: 1rem; line-height: 1; flex-shrink: 0; }
+  .slot-del:hover { border-color: var(--vermil); background: rgba(207,74,44,.06); }
+  .add-slot { border: 1.5px dashed var(--ochre); background: rgba(200,155,60,.07); color: var(--vermil-d); border-radius: 9px; padding: 7px 13px; font-family: inherit; font-weight: 700; font-size: .82rem; cursor: pointer; margin-top: 2px; }
+  .add-slot:hover { background: rgba(200,155,60,.16); }
+
+  /* nav buttons */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 14px; }
+  .btn {
+    font-family: inherit; font-weight: 700; cursor: pointer; border-radius: 12px; padding: 13px 26px;
+    font-size: .98rem; border: 1.5px solid transparent; transition: transform .12s, box-shadow .2s, background .2s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--vermil); color: #fff; box-shadow: var(--shadow-sm); }
+  .btn-primary:hover { background: var(--vermil-d); }
+  .btn-ghost { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink-soft); color: var(--ink); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* completion */
+  .done-card { text-align: center; padding: 46px 30px; }
+  .done-seal { width: 130px; height: 130px; margin: 0 auto 22px; border-radius: 50%; border: 4px double var(--vermil); color: var(--vermil); display: grid; place-content: center; font-family: "Shippori Mincho B1", serif; font-weight: 800; font-size: 1.5rem; transform: rotate(-8deg) scale(0); animation: stamp .5s cubic-bezier(.2,1.6,.4,1) .2s both; }
+  @keyframes stamp { to { transform: rotate(-8deg) scale(1); } }
+  .done-card h2 { font-size: 1.9rem; color: var(--indigo); margin: 0 0 8px; }
+  .meter-wrap { max-width: 460px; margin: 26px auto 8px; text-align: left; }
+  .meter-label { display:flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px; }
+  .meter-track { height: 16px; border-radius: 999px; background: var(--paper-2); border: 1px solid var(--line); overflow: hidden; }
+  .meter-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, var(--ok), var(--ochre)); transition: width 1s cubic-bezier(.3,1,.3,1) .4s; }
+  .checklist { max-width: 480px; margin: 22px auto; text-align: left; }
+  .checklist .ci { display: flex; align-items: center; gap: 11px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 11px; margin-bottom: 8px; background: var(--card); font-size: .92rem; }
+  .checklist .ci .mk { width: 24px; height: 24px; border-radius: 50%; display: grid; place-content: center; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .checklist .ci .mk.y { background: var(--ok); } .checklist .ci .mk.n { background: #c9bda8; }
+  .checklist .ci .det { margin-left: auto; font-size: .8rem; color: var(--ink-soft); max-width: 50%; text-align: right; }
+  .summary { max-width: 520px; margin: 6px auto 0; text-align: left; font-size: .88rem; color: var(--ink-soft); background: var(--paper); border-radius: 12px; padding: 16px 18px; border: 1px dashed var(--line); }
+  .summary b { color: var(--ink); }
+
+  footer { text-align: center; padding: 30px 20px 50px; color: var(--ink-soft); font-size: .8rem; }
+  footer a { color: var(--indigo); }
+
+  /* confetti */
+  .confetti { position: fixed; top: -10px; width: 9px; height: 14px; z-index: 100; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="practice-banner">⚠️ <span>これは練習用シミュレーターです。入力した内容はGoogleには一切送信されません</span></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="seal">れんしゅう<br>道場</div>
+    <span class="kicker">G O O G L E　ビ ジ ネ ス プ ロ フ ィ ー ル</span>
+    <h1>はじめての<em>店舗情報登録</em>を<br>本番そっくりに練習</h1>
+    <p class="lead">「営業時間がわからない」「写真が古い」――そんな理由で来店機会を逃さないために。本物の登録画面そっくりの8ステップを、安心して何度でも練習できます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="stepper" id="stepper" aria-label="登録ステップ"></nav>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<main class="wrap" id="main"></main>
+
+<footer>
+  <p>「良いお店なのに見つけてもらえていない状態」を減らすための練習ツール。<br>本番登録は <a href="https://www.google.com/business/" target="_blank" rel="noopener">Google ビジネス プロフィール公式サイト</a> から。</p>
+  <p style="margin-top:10px">MEOサポート・ご相談は <a href="https://www.threads.net/@velacotta" target="_blank" rel="noopener">Threads @velacotta</a> のDMへお気軽に</p>
+</footer>
+
+<script>
+/* ============================================================
+   練習用シミュレーター — 状態とステップ定義
+   ※ どの入力も外部送信しません（state はメモリ上のみ）
+   ============================================================ */
+const state = {
+  bizName: "", category: "", address: "", area: "",
+  phone: "", website: "", instagram: "",
+  hours: {}, verify: "", attrs: [], desc: "", photos: [],
+  postType: "", postText: ""
+};
+
+const CATEGORIES = ["カフェ","居酒屋","和食レストラン","ラーメン店","美容室","旅館・ホテル","パン屋","整体・サロン","雑貨店","その他"];
+
+// 実際のGoogleビジネスプロフィールの「属性」をグループ別に定義（複数選択）
+const ATTRIBUTES = {
+  "バリアフリー": ["車椅子対応のトイレ","車椅子対応の座席","車椅子対応の駐車場","車椅子対応の入り口","集団補聴用のヒアリングループ"],
+  "サービスオプション": ["店先受取可","宅配","実店舗の営業","テイクアウト","イートイン"],
+  "人気": ["ランチに人気","ディナーに人気","一人での食事"],
+  "食事": ["ランチ","ディナー","カウンターで食事できるお店","テーブルサービス"],
+  "設備": ["トイレ","禁煙"],
+  "雰囲気": ["カジュアル","静か"],
+  "客層": ["LGBTQ フレンドリー","トランスジェンダー対応","大学生に人気"],
+  "プラン": ["予約可"],
+  "決済方法": ["au PAY","d払い","PayPay","クレジットカード","楽天ペイ","交通系 IC カード","Vマネー"],
+  "駐車場": ["空いている駐車スペースはやや少ない","有料駐車場"]
+};
+
+// 投稿（最新情報）のタイプ
+const POST_TYPES = ["最新情報","特典・クーポン","イベント","新メニュー"];
+const DAYS = ["月","火","水","木","金","土","日"];
+// 既定の営業時間（練習用の初期値）
+// 各曜日は複数の時間帯（slots）を持てる ＝ ランチ＋中休み＋ディナーの二部制に対応
+DAYS.forEach(d => state.hours[d] = { open: d!=="水", slots: [ {from:"11:00", to:"14:30"}, {from:"17:30", to:"22:00"} ] });
+
+const steps = [
+  {
+    label: "ログイン",
+    title: "Googleアカウントで入口に立つ",
+    intro: "登録はすべて無料です。まずはお店用のGoogleアカウントでログインします。個人用とは分けておくと、あとで複数人での管理がラクになります。",
+    points: ["費用は0円。Googleアカウントさえあれば誰でも登録できる","お店専用のアカウントを作っておくと管理が安全","スマホ・パソコンどちらからでもOK"],
+    tip: { t: "ここがポイント", d: "アカウントは「お店の鍵」。共有する人が増えても安心なよう、個人のプライベート用と分けるのがおすすめです。" },
+    render: () => `
+      <h3>ログイン</h3>
+      <p class="mock-sub">business.google.com にアクセスした想定の画面です。</p>
+      <label class="field"><span class="lab">メールアドレス <small>（練習用・自由入力でOK）</small></span>
+        <input class="input" type="text" placeholder="ohmise-no-namae@gmail.com" value="ohmise-no-namae@gmail.com" readonly></label>
+      <label class="field"><span class="lab">パスワード</span>
+        <input class="input" type="password" value="••••••••••" readonly></label>
+      <p style="font-size:.82rem;color:var(--ink-soft)">▶ 練習なのでそのまま「次へ」を押して進みましょう。</p>`,
+    validate: () => true
+  },
+  {
+    label: "ビジネス名",
+    title: "お店の正式な名前を入力する",
+    intro: "看板やメニューに書いてあるとおりの正式名称を入れます。「(株)」や地域名を勝手に足したり、キーワードを詰め込んだりするのはNG。実際の名前そのままが、信頼にもつながります。",
+    points: ["看板どおりの正式名称をそのまま入力","「最安」「人気No.1」などの宣伝文句は名前に入れない","正式名称＝検索した人が『ここで合ってる』と安心できる"],
+    tip: { t: "なぜ大事？", d: "名前がブレると、お客様が『本当にこのお店？』と迷います。一度決めた表記で、SNSや食べログとも統一しておきましょう。" },
+    render: () => `
+      <h3>ビジネス名を追加</h3>
+      <p class="mock-sub">お客様がGoogleマップで最初に目にする名前です。</p>
+      <label class="field"><span class="lab">ビジネス名（お店の名前）</span>
+        <input class="input" id="i_bizName" type="text" placeholder="例：海風カフェ 由布院店" value="${esc(state.bizName)}">
+        <div class="msg" id="m_bizName"></div></label>`,
+    validate: () => {
+      const v = (document.getElementById("i_bizName").value || "").trim();
+      state.bizName = v;
+      const m = document.getElementById("m_bizName");
+      if (v.length < 2) { fail("i_bizName","m_bizName","お店の名前を入力してください"); return false; }
+      good("i_bizName","m_bizName","いい名前です！この表記で統一しましょう"); return true;
+    }
+  },
+  {
+    label: "業種",
+    title: "ビジネスカテゴリ（業種）を選ぶ",
+    intro: "「カフェ」「居酒屋」など、お店の主役となる業種をひとつ選びます。これは検索で『カフェ 由布院』と探す人にお店を結びつける、とても重要な設定です。",
+    points: ["一番メインの業種をひとつ選ぶ（あとで追加もできる）","業種が正しいと、関連する検索でヒットしやすくなる","迷ったら『お客様が何と検索するか』で考える"],
+    tip: { t: "理念メモ", d: "カテゴリは“見つけてもらう入口”。順位を狙う前に、まず正しい入口に立つことが第一歩です。" },
+    render: () => `
+      <h3>業種を選択</h3>
+      <p class="mock-sub">お店に一番近いものをタップしてください。</p>
+      <div class="chips" id="chips_cat">
+        ${CATEGORIES.map(c => `<button type="button" class="chip ${state.category===c?'sel':''}" data-cat="${c}">${c}</button>`).join("")}
+      </div>
+      <div class="msg" id="m_cat" style="margin-top:12px"></div>`,
+    afterRender: () => {
+      document.querySelectorAll("#chips_cat .chip").forEach(ch => ch.onclick = () => {
+        document.querySelectorAll("#chips_cat .chip").forEach(x => x.classList.remove("sel"));
+        ch.classList.add("sel"); state.category = ch.dataset.cat;
+        document.getElementById("m_cat").className = "msg good";
+        document.getElementById("m_cat").textContent = `「${state.category}」で探している人に届きます`;
+      });
+    },
+    validate: () => {
+      if (!state.category) { const m=document.getElementById("m_cat"); m.className="msg bad"; m.textContent="業種をひとつ選んでください"; return false; }
+      return true;
+    }
+  },
+  {
+    label: "場所",
+    title: "お店の住所を登録する",
+    intro: "実店舗の住所を入力すると、Googleマップ上にお店のピンが立ちます。これが『ルート検索（道案内）』の出発点。住所が正確なほど、お客様は迷わずたどり着けます。",
+    points: ["建物名・階・部屋番号まで正確に","地図のピンが入口の位置に合っているか確認","正確な住所＝『ナビで一発で着く』来店導線"],
+    tip: { t: "来店導線のかなめ", d: "住所が1文字違うだけで、お客様が裏口や隣の建物に着いてしまうことも。ピンの位置は必ず目視で確認を。" },
+    render: () => `
+      <h3>所在地（住所）</h3>
+      <p class="mock-sub">入力すると地図にピンが表示されます。</p>
+      <label class="field"><span class="lab">住所</span>
+        <input class="input" id="i_address" type="text" placeholder="例：大分県由布市湯布院町川上1234-5 〇〇ビル1F" value="${esc(state.address)}">
+        <div class="msg" id="m_address"></div></label>
+      <div class="fakemap" id="fakemap">
+        <div class="road" style="left:0;right:0;top:60%;height:10px"></div>
+        <div class="road" style="top:0;bottom:0;left:38%;width:9px"></div>
+        <div class="pin" id="pin" style="display:none">📍</div>
+      </div>`,
+    afterRender: () => {
+      const inp = document.getElementById("i_address");
+      const pin = document.getElementById("pin");
+      const sync = () => { pin.style.display = inp.value.trim().length > 5 ? "block" : "none"; };
+      inp.addEventListener("input", () => { sync(); });
+      sync();
+    },
+    validate: () => {
+      const v = (document.getElementById("i_address").value || "").trim();
+      state.address = v;
+      if (v.length < 6) { fail("i_address","m_address","住所をできるだけ正確に入力してください"); return false; }
+      good("i_address","m_address","ピンが立ちました。入口の位置に合っているか確認を"); return true;
+    }
+  },
+  {
+    label: "連絡先",
+    title: "電話・ウェブ・SNSをつなぐ",
+    intro: "ここが来店への一番の近道。電話番号があれば『今すぐ電話』ボタンが、URLがあれば予約サイトやInstagramへの導線が生まれます。1つでも多く埋めるほど、お店の魅力が伝わります。",
+    points: ["電話番号 → ワンタップで予約・問い合わせ","ウェブ/予約サイト → メニューや雰囲気が伝わる","Instagram → 写真でファンを増やせる"],
+    tip: { t: "ここが本丸", d: "『電話・ルート・SNS』の3つの導線が、このプロジェクトで一番大事にしているところ。空欄は“せっかくの来店機会の取りこぼし”です。" },
+    render: () => `
+      <h3>連絡先情報</h3>
+      <p class="mock-sub">埋めるほどお客様の行動につながります。</p>
+      <label class="field"><span class="lab">電話番号</span>
+        <input class="input" id="i_phone" type="tel" placeholder="例：0977-00-0000" value="${esc(state.phone)}">
+        <div class="msg" id="m_phone"></div></label>
+      <label class="field"><span class="lab">ウェブサイト / 予約ページ <small>（任意）</small></span>
+        <input class="input" id="i_website" type="text" placeholder="例：https://umikaze-cafe.jp" value="${esc(state.website)}"></label>
+      <label class="field"><span class="lab">Instagram <small>（任意・あると強い）</small></span>
+        <input class="input" id="i_instagram" type="text" placeholder="例：@umikaze_cafe" value="${esc(state.instagram)}"></label>`,
+    validate: () => {
+      const p = (document.getElementById("i_phone").value || "").trim();
+      state.phone = p;
+      state.website = (document.getElementById("i_website").value || "").trim();
+      state.instagram = (document.getElementById("i_instagram").value || "").trim();
+      if (!/[0-9\-]{8,}/.test(p)) { fail("i_phone","m_phone","電話番号を入力してください（来店導線の要です）"); return false; }
+      good("i_phone","m_phone","『今すぐ電話』ボタンが使えるようになります"); return true;
+    }
+  },
+  {
+    label: "営業時間",
+    title: "営業時間と定休日を設定する",
+    intro: "「開いているのか分からない」は来店をあきらめる一番の理由。曜日ごとの営業時間と定休日を正しく入れておけば、お客様は安心して足を運べます。",
+    points: ["曜日ごとに開店・閉店時刻を設定","ランチ→中休み→ディナーの二部制は「＋時間帯を追加」で対応","定休日はチェックを外すだけ／臨時休業もこまめに更新を"],
+    tip: { t: "中休みのあるお店へ", d: "昼と夜の間に休憩がある二部制でも大丈夫。時間帯を分けて登録すれば、お客様に『今は中休み』と正しく伝わり、来店時間のミスマッチを防げます。" },
+    render: () => `
+      <h3>営業時間</h3>
+      <p class="mock-sub">緑のチェックが「営業日」。中休みがあるお店は時間帯を追加できます。</p>
+      <div id="hours"></div>
+      <div class="msg" id="m_hours" style="margin-top:6px"></div>`,
+    afterRender: () => {
+      const host = document.getElementById("hours");
+      const fmt = (d) => state.hours[d].open
+        ? state.hours[d].slots.map(s=>`${s.from}〜${s.to}`).join(" / ")
+        : "定休日";
+      const mount = () => {
+        host.innerHTML = DAYS.map(d => {
+          const h = state.hours[d];
+          return `<div class="day-block ${h.open?'':'closed'}" data-day="${d}">
+            <div class="day-head">
+              <button type="button" class="toggle ${h.open?'on':''}" data-day="${d}">${h.open?'✓':''}</button>
+              <span class="day">${d}曜日</span>
+              <span class="day-state">${fmt(d)}</span>
+            </div>
+            <div class="slots">
+              ${h.slots.map((s,si)=>`
+                <div class="slot-row" data-si="${si}">
+                  <input class="input time" type="time" value="${s.from}" data-day="${d}" data-si="${si}" data-k="from">
+                  <span class="tilde">〜</span>
+                  <input class="input time" type="time" value="${s.to}" data-day="${d}" data-si="${si}" data-k="to">
+                  <button type="button" class="slot-del" data-day="${d}" data-si="${si}" title="この時間帯を削除" ${h.slots.length<=1?'style="visibility:hidden"':''}>×</button>
+                </div>`).join("")}
+              <button type="button" class="add-slot" data-day="${d}">＋ 時間帯を追加（中休み・二部制）</button>
+            </div>
+          </div>`;
+        }).join("");
+        bind();
+      };
+      const bind = () => {
+        host.querySelectorAll(".toggle").forEach(t => t.onclick = () => {
+          state.hours[t.dataset.day].open = !state.hours[t.dataset.day].open; mount();
+        });
+        host.querySelectorAll(".time").forEach(inp => inp.onchange = () => {
+          state.hours[inp.dataset.day].slots[+inp.dataset.si][inp.dataset.k] = inp.value;
+          host.querySelector(`.day-block[data-day="${inp.dataset.day}"] .day-state`).textContent = fmt(inp.dataset.day);
+        });
+        host.querySelectorAll(".add-slot").forEach(b => b.onclick = () => {
+          state.hours[b.dataset.day].slots.push({ from:"17:00", to:"21:00" }); mount();
+        });
+        host.querySelectorAll(".slot-del").forEach(b => b.onclick = () => {
+          const h = state.hours[b.dataset.day]; if (h.slots.length>1) h.slots.splice(+b.dataset.si,1); mount();
+        });
+      };
+      mount();
+    },
+    validate: () => {
+      const m = document.getElementById("m_hours");
+      if (!DAYS.some(d => state.hours[d].open)) { m.className="msg bad"; m.textContent="少なくとも1日は営業日を設定してください"; return false; }
+      // 開店＜閉店になっているか（中休みの入力ミス防止）
+      const bad = DAYS.find(d => state.hours[d].open && state.hours[d].slots.some(s => s.from >= s.to));
+      if (bad) { m.className="msg bad"; m.textContent=`${bad}曜日の時間帯で「開店＜閉店」になっていません。ご確認を`; return false; }
+      m.className="msg good"; m.textContent="営業時間が設定できました。中休みも正しく伝わります"; return true;
+    }
+  },
+  {
+    label: "オーナー確認",
+    title: "「本当にお店の人」だと確認する",
+    intro: "他人が勝手に登録できないよう、Googleが本人確認を行います。確認が済むと、情報の編集や口コミ返信ができるようになります。方法はお店の状況で選べます。",
+    points: ["ハガキ（郵送コード）が最も一般的","電話・メール・動画など他の方法が選べる場合も","確認が済んで初めて『公開・編集』ができる"],
+    tip: { t: "焦らないで", d: "ハガキは届くまで数日〜2週間ほど。届いたコードを入力すれば完了です。練習では好きな方法を選んでOK。" },
+    render: () => `
+      <h3>オーナー確認の方法</h3>
+      <p class="mock-sub">受け取りやすい方法を選んでください。</p>
+      <div id="verify">
+        ${[
+          ["ハガキ","登録住所にコードが郵送されます（数日〜2週間）"],
+          ["電話","自動音声で確認コードが伝えられます（即時）"],
+          ["メール","登録メールに確認リンクが届きます"],
+          ["動画","店内やレジを撮影して実在を証明します"]
+        ].map(([t,d]) => `
+          <label class="radio-card ${state.verify===t?'sel':''}" data-v="${t}">
+            <input type="radio" name="verify" ${state.verify===t?'checked':''}>
+            <span><span class="rc-t">${t}で確認</span><br><span class="rc-d">${d}</span></span>
+          </label>`).join("")}
+      </div>
+      <div class="msg" id="m_verify"></div>`,
+    afterRender: () => {
+      document.querySelectorAll("#verify .radio-card").forEach(c => c.onclick = () => {
+        document.querySelectorAll("#verify .radio-card").forEach(x => { x.classList.remove("sel"); x.querySelector("input").checked=false; });
+        c.classList.add("sel"); c.querySelector("input").checked = true; state.verify = c.dataset.v;
+        good(null,"m_verify",`「${state.verify}」で確認を進めます`);
+      });
+    },
+    validate: () => {
+      if (!state.verify) { const m=document.getElementById("m_verify"); m.className="msg bad"; m.textContent="確認方法をひとつ選んでください"; return false; }
+      return true;
+    }
+  },
+  {
+    label: "特徴・属性",
+    title: "お店の特徴（属性）を伝える",
+    intro: "バリアフリー・支払い方法・雰囲気・テイクアウトの可否など、お店の「特徴」を細かく登録できます。ここが充実しているほど、お客様は来店前に『自分に合うお店か』を判断でき、不安やミスマッチが減ります。",
+    points: ["決済方法（PayPay・クレカ等）は来店前のよくある確認ポイント","車椅子対応・禁煙などは必要な人にとって死活的な情報","テイクアウト・予約可などは集客に直結する特徴"],
+    tip: { t: "情報の充実が魅力になる", d: "「バリアフリー対応」「PayPayが使える」――こうした一つひとつが、必要としている人には来店の決め手。順位を追う前に、まず“伝わる情報”を増やしましょう。" },
+    render: () => `
+      <h3>店舗の属性・特徴</h3>
+      <p class="mock-sub">当てはまるものをタップ（複数選択OK・あとから追加もできます）。</p>
+      <div id="attrs">
+        ${Object.entries(ATTRIBUTES).map(([g, items])=>`
+          <div class="attr-group">
+            <h4>${g}</h4>
+            <div class="chips">
+              ${items.map(it=>`<button type="button" class="chip ${state.attrs.includes(it)?'sel':''}" data-attr="${esc(it)}">${esc(it)}</button>`).join("")}
+            </div>
+          </div>`).join("")}
+      </div>
+      <div class="msg good" id="m_attrs" style="margin-top:10px">${state.attrs.length?`${state.attrs.length}件の特徴を登録中`:""}</div>`,
+    afterRender: () => {
+      document.querySelectorAll("#attrs .chip").forEach(ch => ch.onclick = () => {
+        const a = ch.dataset.attr; ch.classList.toggle("sel");
+        if (state.attrs.includes(a)) state.attrs = state.attrs.filter(x=>x!==a); else state.attrs.push(a);
+        const m = document.getElementById("m_attrs"); m.className = "msg good";
+        m.textContent = state.attrs.length ? `${state.attrs.length}件の特徴を登録中` : "";
+      });
+    },
+    validate: () => true  // 任意。選ばなくても進めるが、選ぶほど充実度が上がる
+  },
+  {
+    label: "魅力づけ",
+    title: "写真と紹介文でお店の“顔”を整える",
+    intro: "お店の第一印象を決める写真と紹介文。明るい写真と心のこもった紹介文は、順位以上にお客様の『行ってみたい』を生みます。",
+    points: ["外観・店内・看板メニューの写真を選ぶ","紹介文はお店の想いやおすすめを自分の言葉で","写真と文章＝『良いお店』が自然に伝わる導線"],
+    tip: { t: "ここがお店の表紙", d: "メニューや雰囲気が写真で伝われば、お客様は来店前に安心できます。古い写真のままにせず、定期的に新しい一枚を。" },
+    render: () => `
+      <h3>写真と紹介文</h3>
+      <p class="mock-sub">お店らしさを表現しましょう。</p>
+      <label class="field"><span class="lab">追加する写真を選ぶ <small>（練習用・複数OK）</small></span>
+        <div class="chips" id="chips_photo">
+          ${["外観","店内","看板メニュー","スタッフ","ドリンク","季節限定"].map(p=>`<button type="button" class="chip ${state.photos.includes(p)?'sel':''}" data-p="${p}">📷 ${p}</button>`).join("")}
+        </div>
+        <div class="msg" id="m_photo"></div></label>
+      <label class="field"><span class="lab">お店の紹介文</span>
+        <textarea class="input" id="i_desc" placeholder="例：由布院の山あいにある小さなカフェです。地元の食材を使った日替わりプレートと、自家焙煎のコーヒーが自慢。お散歩の途中にぜひお立ち寄りください。">${esc(state.desc)}</textarea>
+        <div class="msg" id="m_desc"></div></label>`,
+    afterRender: () => {
+      document.querySelectorAll("#chips_photo .chip").forEach(ch => ch.onclick = () => {
+        const p = ch.dataset.p; ch.classList.toggle("sel");
+        if (state.photos.includes(p)) state.photos = state.photos.filter(x=>x!==p); else state.photos.push(p);
+        good(null,"m_photo", state.photos.length ? `${state.photos.length}枚の写真を追加しました` : "");
+      });
+    },
+    validate: () => {
+      state.desc = (document.getElementById("i_desc").value || "").trim();
+      if (state.photos.length === 0) { const m=document.getElementById("m_photo"); m.className="msg bad"; m.textContent="写真を1枚以上選びましょう（第一印象が決まります）"; return false; }
+      if (state.desc.length < 10) { fail("i_desc","m_desc","紹介文を入力しましょう（あなたの言葉が一番伝わります）"); return false; }
+      good("i_desc","m_desc","すばらしい！これで魅力がしっかり伝わります"); return true;
+    }
+  },
+  {
+    label: "最新情報",
+    title: "最新情報を発信し続ける（ここからが本番）",
+    intro: "登録はゴールではなくスタート。期間限定メニュー・新メニュー・イベントなどを「投稿」で発信すると、検索やマップ上に新着として表示され、お店が“生きている”ことが伝わります。継続して更新するお店ほど、見つけてもらえます。",
+    points: ["期間限定・新メニューは投稿で写真つき発信","定休日変更や臨時休業のお知らせにも使える","こまめな更新＝『今も元気に営業中』という安心感"],
+    tip: { t: "登録後こそ大切", d: "投稿は数日〜1週間ほどで自動的に目立たなくなります。だからこそ続けることが力に。自分で続けられない時は、その更新作業をお手伝いするのが私たちの役割です。" },
+    render: () => `
+      <h3>最新情報を投稿</h3>
+      <p class="mock-sub">どんな投稿の種類か選んで、内容を書いてみましょう。</p>
+      <label class="field"><span class="lab">投稿の種類</span>
+        <div class="chips" id="chips_post">
+          ${POST_TYPES.map(t=>`<button type="button" class="chip ${state.postType===t?'sel':''}" data-pt="${t}">${t}</button>`).join("")}
+        </div></label>
+      <label class="field"><span class="lab">投稿の内容</span>
+        <textarea class="input" id="i_post" placeholder="例：【期間限定】秋の栗モンブランパフェ、本日より登場！11月末まで。数量限定なのでお早めに🍂">${esc(state.postText)}</textarea>
+        <div class="msg" id="m_post"></div></label>
+      <div class="post-preview">
+        <div style="font-size:.76rem;color:var(--ink-soft);margin-bottom:8px">▼ お客様にはこう見えます（プレビュー）</div>
+        <div class="pp-card">
+          <div class="pp-img">📷 写真をつけるとより目立ちます</div>
+          <div class="pp-body">
+            <div class="pp-tag" id="pp-tag">最新情報</div>
+            <p class="pp-text pp-empty" id="pp-text">ここに投稿内容が表示されます</p>
+          </div>
+        </div>
+      </div>`,
+    afterRender: () => {
+      const sync = () => {
+        const tag = document.getElementById("pp-tag");
+        const txt = document.getElementById("pp-text");
+        tag.textContent = state.postType || "最新情報";
+        if (state.postText) { txt.textContent = state.postText; txt.classList.remove("pp-empty"); }
+        else { txt.textContent = "ここに投稿内容が表示されます"; txt.classList.add("pp-empty"); }
+      };
+      document.querySelectorAll("#chips_post .chip").forEach(ch => ch.onclick = () => {
+        document.querySelectorAll("#chips_post .chip").forEach(x=>x.classList.remove("sel"));
+        ch.classList.add("sel"); state.postType = ch.dataset.pt; sync();
+      });
+      document.getElementById("i_post").addEventListener("input", e => { state.postText = e.target.value.trim(); sync(); });
+      sync();
+    },
+    validate: () => {
+      state.postText = (document.getElementById("i_post").value || "").trim();
+      if (!state.postType) { const m=document.getElementById("m_post"); m.className="msg bad"; m.textContent="投稿の種類を選んでみましょう"; return false; }
+      if (state.postText.length < 8) { fail("i_post","m_post","投稿内容を書いてみましょう（期間限定や新メニューなど）"); return false; }
+      good("i_post","m_post","いい投稿です！本番ではこれを定期的に続けましょう"); return true;
+    }
+  }
+];
+
+/* ---------- helpers ---------- */
+function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fail(inp,msg,text){ if(inp){const e=document.getElementById(inp);e&&e.classList.add("err");} const m=document.getElementById(msg); m.className="msg bad"; m.textContent=text; }
+function good(inp,msg,text){ if(inp){const e=document.getElementById(inp);e&&e.classList.remove("err");} const m=document.getElementById(msg); m.className="msg good"; m.textContent=text; }
+
+/* ---------- engine ---------- */
+let current = 0;
+const maxReached = { v: 0 };
+
+// ステップ番号は自動採番（ステップを足しても番号がズレない）
+function stepTag(i){ return `STEP ${i+1} / ${steps.length} ・ ${steps[i].label}`; }
+
+function buildStepper(){
+  const el = document.getElementById("stepper");
+  el.innerHTML = steps.map((s,i)=>`
+    <button data-i="${i}" ${i>maxReached.v?'disabled':''}>
+      <span class="num">${i+1}</span>${s.label}
+    </button>`).join("");
+  el.querySelectorAll("button").forEach(b => b.onclick = () => { const i=+b.dataset.i; if(i<=maxReached.v) goTo(i); });
+  syncStepper();
+}
+function syncStepper(){
+  document.querySelectorAll("#stepper button").forEach((b,i)=>{
+    b.classList.toggle("active", i===current);
+    b.classList.toggle("done", i<current);
+    b.disabled = i>maxReached.v;
+  });
+  document.getElementById("progressFill").style.width = ((current)/(steps.length-1))*100 + "%";
+}
+
+function renderStep(){
+  const s = steps[current];
+  document.getElementById("main").innerHTML = `
+    <div class="step show">
+      <div class="grid">
+        <section class="panel explain">
+          <div class="step-tag">${stepTag(current)}</div>
+          <h2>${s.title}</h2>
+          <p>${s.intro}</p>
+          <ul>${s.points.map(p=>`<li>${p}</li>`).join("")}</ul>
+          <div class="tip"><strong>${s.tip.t}</strong>${s.tip.d}</div>
+        </section>
+        <section class="panel mock">
+          <div class="mock-bar"><span class="gdot"><i></i><i></i><i></i><i></i></span><span class="mock-url">🔒 business.google.com</span></div>
+          <div class="mock-body">${s.render()}</div>
+        </section>
+      </div>
+      <div class="nav">
+        <button class="btn btn-ghost" id="btnBack" ${current===0?'disabled':''}>← 戻る</button>
+        <button class="btn btn-primary" id="btnNext">${current===steps.length-1?'登録を完了する 🎉':'次へ →'}</button>
+      </div>
+    </div>`;
+  s.afterRender && s.afterRender();
+  document.getElementById("btnBack").onclick = () => { if(current>0) goTo(current-1); };
+  document.getElementById("btnNext").onclick = next;
+  window.scrollTo({ top: document.querySelector('.stepper').offsetTop - 80, behavior: 'smooth' });
+}
+
+function goTo(i){ current=i; syncStepper(); renderStep(); }
+
+function next(){
+  const s = steps[current];
+  if (s.validate && !s.validate()) return;
+  if (current === steps.length-1) { finish(); return; }
+  current++; maxReached.v = Math.max(maxReached.v, current);
+  syncStepper(); renderStep();
+}
+
+/* ---------- completion ---------- */
+function finish(){
+  document.getElementById("progressFill").style.width = "100%";
+  document.querySelectorAll("#stepper button").forEach(b=>{b.classList.add("done");b.classList.remove("active");});
+
+  const checks = [
+    ["店名", !!state.bizName, state.bizName],
+    ["業種", !!state.category, state.category],
+    ["住所（ルート検索）", state.address.length>5, state.address || "未入力"],
+    ["電話（今すぐ電話）", /[0-9\-]{8,}/.test(state.phone), state.phone || "未入力"],
+    ["ウェブ / SNS", !!(state.website || state.instagram), [state.website, state.instagram].filter(Boolean).join(" / ") || "未入力"],
+    ["営業時間", DAYS.some(d=>state.hours[d].open), DAYS.filter(d=>state.hours[d].open).join("・")+" 営業"],
+    ["お店の特徴（属性）", state.attrs.length>0, state.attrs.length ? state.attrs.length+"件" : "なし"],
+    ["写真", state.photos.length>0, state.photos.join("・") || "なし"],
+    ["紹介文", state.desc.length>=10, state.desc ? "入力済み" : "なし"],
+    ["最新情報の発信", !!(state.postType && state.postText), state.postType || "なし"]
+  ];
+  const score = Math.round(checks.filter(c=>c[1]).length / checks.length * 100);
+
+  document.getElementById("main").innerHTML = `
+    <div class="step show">
+      <div class="panel done-card">
+        <div class="done-seal">登録<br>完了</div>
+        <h2>おつかれさまでした！</h2>
+        <p style="color:var(--ink-soft);max-width:520px;margin:0 auto">これで「${esc(state.bizName)||'あなたのお店'}」は、必要としている人に見つけてもらえる準備が整いました。本番でも同じ流れで進められます。</p>
+
+        <div class="meter-wrap">
+          <div class="meter-label"><span>見つけてもらえる度</span><span id="scoreNum">0%</span></div>
+          <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+        </div>
+
+        <div class="checklist">
+          ${checks.map(c=>`<div class="ci"><span class="mk ${c[1]?'y':'n'}">${c[1]?'✓':'–'}</span><span>${c[0]}</span><span class="det">${esc(String(c[2]))}</span></div>`).join("")}
+        </div>
+
+        <div class="summary">
+          <b>来店導線チェック：</b>「電話・ルート（住所）・SNS／ウェブ」がそろうほど、お客様は迷わず行動できます。空欄があれば本番で埋めていきましょう。順位を追うより、まずは<b>情報の充実</b>から。<br><br>
+          <b>そして、ここからが本番。</b>登録して終わりではありません。口コミへの返信・写真の更新・最新情報の投稿（期間限定／新メニュー）を<b>続ける</b>ことで、お店はもっと見つけてもらえます。ご自身で続けるのが理想ですが、手が回らない時はその更新作業をお手伝いします。<br><br>
+          ご相談は <a href="https://www.threads.net/@velacotta" target="_blank" rel="noopener" style="color:var(--indigo);font-weight:700">Threads @velacotta</a> のDMへ。
+        </div>
+
+        <div class="nav" style="justify-content:center;margin-top:28px">
+          <button class="btn btn-ghost" id="btnRestart">もう一度練習する ↺</button>
+          <a class="btn btn-primary" href="https://www.google.com/business/" target="_blank" rel="noopener">本番の登録へ進む →</a>
+        </div>
+      </div>
+    </div>`;
+
+  setTimeout(()=>{ document.getElementById("meterFill").style.width = score+"%"; animateScore(score); confetti(); }, 250);
+  document.getElementById("btnRestart").onclick = () => location.reload();
+}
+
+function animateScore(target){
+  const el = document.getElementById("scoreNum"); let n=0;
+  const t = setInterval(()=>{ n+=2; if(n>=target){n=target;clearInterval(t);} el.textContent=n+"%"; }, 18);
+}
+
+function confetti(){
+  const colors=["#cf4a2c","#c89b3c","#173f4f","#5f7a55","#fff"];
+  for(let i=0;i<70;i++){
+    const c=document.createElement("div"); c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[i%colors.length];
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    const dur=2.6+Math.random()*1.8;
+    c.animate([{transform:`translateY(0) rotate(0)`,opacity:1},{transform:`translateY(105vh) rotate(${720+Math.random()*360}deg)`,opacity:.9}],{duration:dur*1000,easing:"cubic-bezier(.4,.1,.6,1)"});
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+/* ---------- boot ---------- */
+buildStepper();
+renderStep();
+</script>
+</body>
+</html>
